@@ -11,6 +11,7 @@ import { COMPONENT_TOKENS } from '../../tokens/component';
 import { GLOBAL_TOKENS } from '../../tokens/global';
 import type { UiLibrary } from '../types';
 import { VOLT_STATUS_TOKENS } from './tokens/status';
+import { VOLT_COMPAT_TOKENS } from './tokens/compat';
 import '../../components/atoms/atoms.css';
 import '../../components/molecules/molecules.css';
 import '../../components/organisms/organisms.css';
@@ -26,7 +27,10 @@ export const voltLibrary: UiLibrary = {
   name: 'Volt',
   tagline: 'EV charging design system — global · brand · component',
   globalTokens: GLOBAL_TOKENS,
-  componentTokens: COMPONENT_TOKENS,
+  componentTokens: {
+    ...COMPONENT_TOKENS,
+    tokens: [...COMPONENT_TOKENS.tokens, ...VOLT_COMPAT_TOKENS.tokens],
+  },
   buildSemantic: (brand) => buildSemanticTokens(brand, VOLT_STATUS_TOKENS),
   presets: PRESETS,
   defaultPreset: DEFAULT_PRESET,
