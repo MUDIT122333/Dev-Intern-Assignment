@@ -1,10 +1,28 @@
 import {
   gray,
+  grayA,
+  grayDark,
+  grayDarkA,
   mauve,
+  mauveA,
+  mauveDark,
+  mauveDarkA,
   olive,
+  oliveA,
+  oliveDark,
+  oliveDarkA,
   sage,
+  sageA,
+  sageDark,
+  sageDarkA,
   sand,
+  sandA,
+  sandDark,
+  sandDarkA,
   slate,
+  slateA,
+  slateDark,
+  slateDarkA,
 } from '@radix-ui/colors';
 import { generateRadixColors } from './radixColors';
 import type { TokenDef, TokenLayerDef } from './types';
@@ -44,6 +62,20 @@ const GRAY_SEED: Record<GrayTint, string> = {
   sand: sand.sand9,
 };
 
+const GRAY_SCALES: Record<GrayTint, {
+  light: string[];
+  dark: string[];
+  lightAlpha: string[];
+  darkAlpha: string[];
+}> = {
+  gray: { light: Object.values(gray), dark: Object.values(grayDark), lightAlpha: Object.values(grayA), darkAlpha: Object.values(grayDarkA) },
+  mauve: { light: Object.values(mauve), dark: Object.values(mauveDark), lightAlpha: Object.values(mauveA), darkAlpha: Object.values(mauveDarkA) },
+  slate: { light: Object.values(slate), dark: Object.values(slateDark), lightAlpha: Object.values(slateA), darkAlpha: Object.values(slateDarkA) },
+  sage: { light: Object.values(sage), dark: Object.values(sageDark), lightAlpha: Object.values(sageA), darkAlpha: Object.values(sageDarkA) },
+  olive: { light: Object.values(olive), dark: Object.values(oliveDark), lightAlpha: Object.values(oliveA), darkAlpha: Object.values(oliveDarkA) },
+  sand: { light: Object.values(sand), dark: Object.values(sandDark), lightAlpha: Object.values(sandA), darkAlpha: Object.values(sandDarkA) },
+};
+
 const LIGHT_BG = '#ffffff';
 const DARK_BG = '#111113';
 
@@ -78,6 +110,7 @@ export function buildSemanticTokens(
     ? normalizeHex(brand.darkAccentHex)
     : accentHex;
   const graySeed = GRAY_SEED[brand.grayTint];
+  const grayScale = GRAY_SCALES[brand.grayTint];
 
   const light = generateRadixColors({
     appearance: 'light',
@@ -111,14 +144,14 @@ export function buildSemanticTokens(
     tokens.push({
       path: `gray.${i + 1}`,
       type: 'color',
-      modes: { light: light.grayScale[i], dark: dark.grayScale[i] },
+      modes: { light: grayScale.light[i], dark: grayScale.dark[i] },
     });
     tokens.push({
       path: `gray.a${i + 1}`,
       type: 'color',
       modes: {
-        light: light.grayScaleAlpha[i],
-        dark: dark.grayScaleAlpha[i],
+        light: grayScale.lightAlpha[i],
+        dark: grayScale.darkAlpha[i],
       },
     });
   }
@@ -152,7 +185,7 @@ export function buildSemanticTokens(
       modes:
         brand.panelStyle === 'translucent'
           ? { light: light.graySurface, dark: 'rgba(0, 0, 0, 0.25)' }
-          : { light: '#ffffff', dark: dark.grayScale[1] },
+          : { light: '#ffffff', dark: grayScale.dark[1] },
     },
     {
       path: 'color.panel-blur',
